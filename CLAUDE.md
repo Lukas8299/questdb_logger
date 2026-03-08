@@ -6,11 +6,25 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a Home Assistant custom integration (`questdb_logger`) that logs entity state changes to a QuestDB time-series database over TCP using the QuestDB line protocol.
 
+## Repository Structure
+
+```
+questdb_logger/
+├── custom_components/
+│   └── questdb_logger/   ← integration source (copied by HACS)
+│       ├── __init__.py
+│       ├── const.py
+│       └── manifest.json
+├── hacs.json
+├── README.md
+└── CLAUDE.md
+```
+
 ## Development Setup
 
 This is a Home Assistant custom integration — no `setup.py` or `pyproject.toml`. To develop and test:
 
-1. Place the `questdb_logger/` folder inside your Home Assistant `custom_components/` directory.
+1. Copy `custom_components/questdb_logger/` into your Home Assistant `config/custom_components/` directory.
 2. Add configuration to `configuration.yaml` (see Architecture section below).
 3. Restart Home Assistant to load the integration.
 
@@ -30,7 +44,7 @@ HA STATE_CHANGED event
 
 ### Key Components
 
-- **`__init__.py`**: All integration logic
+- **`custom_components/questdb_logger/__init__.py`**: All integration logic
   - `async_setup()`: HA entry point — parses config, wires event listener and shutdown handler
   - `QuestDBSender`: Manages async TCP connection and batched writes to QuestDB
     - `start()` / `stop()`: Lifecycle — creates/cancels the worker task and closes the TCP writer
@@ -38,8 +52,9 @@ HA STATE_CHANGED event
     - `_connect()`: Opens TCP connection with `CONNECT_TIMEOUT = 10 s`; logs success/failure
     - `_escape()`: Escapes ` `, `,`, `=`, `\`, `\n`, `\r` for ILP tag values
   - `handle_stop()`: Unsubscribes the state listener and calls `sender.stop()` on `EVENT_HOMEASSISTANT_STOP`
-- **`const.py`**: Custom constants only — `DOMAIN`, `CONF_HOST`, `CONF_PORT`, `DEFAULT_HOST`, `DEFAULT_PORT`, `CONF_ENTITY_GLOBS`. Standard HA constants (`CONF_INCLUDE`, `CONF_EXCLUDE`, etc.) are imported directly from `homeassistant.const`.
-- **`manifest.json`**: HA metadata (`iot_class: local_push`, version, domain)
+- **`custom_components/questdb_logger/const.py`**: Custom constants only — `DOMAIN`, `CONF_HOST`, `CONF_PORT`, `DEFAULT_HOST`, `DEFAULT_PORT`, `CONF_ENTITY_GLOBS`. Standard HA constants (`CONF_INCLUDE`, `CONF_EXCLUDE`, etc.) are imported directly from `homeassistant.const`.
+- **`custom_components/questdb_logger/manifest.json`**: HA metadata (`iot_class: local_push`, version, domain)
+- **`hacs.json`**: HACS metadata (`name`, `render_readme: true`)
 
 ### QuestDB Line Protocol
 

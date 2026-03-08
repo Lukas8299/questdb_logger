@@ -13,7 +13,16 @@ A Home Assistant custom integration that logs entity state changes to a [QuestDB
 
 ## Installation
 
-1. Copy the `questdb_logger/` folder into your Home Assistant `custom_components/` directory:
+### HACS (recommended)
+
+1. In HACS, go to **Integrations → ⋮ → Custom repositories**.
+2. Add `Lukas8299/questdb_logger` with category **Integration**.
+3. Search for **QuestDB Logger** and install it.
+4. Restart Home Assistant.
+
+### Manual
+
+1. Copy `custom_components/questdb_logger/` from this repo into your Home Assistant `config/custom_components/` directory:
    ```
    config/
    └── custom_components/
