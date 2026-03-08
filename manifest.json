@@ -1,0 +1,10 @@
+{
+  "domain": "questdb_logger",
+  "name": "QuestDB Logger",
+  "version": "1.0.0",
+  "documentation": "https://questdb.io",
+  "dependencies": [],
+  "codeowners": [],
+  "requirements": [],
+  "iot_class": "local_push"
+}
